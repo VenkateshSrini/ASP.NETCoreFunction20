@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/ASPNETCoreFunction2.0/v15
+/AzureFunction20/Docker/.vscode
+/AzureFunction20/HttpFunction/.vs/HttpFunction/v15
