@@ -1,0 +1,9 @@
+D:\Venkatesh\ServerlessArchitecture\ASPNETCoreFunction2.0\AzureFunction20\HttpFunction\WebJobs.Extension.File\bin\Debug\netstandard2.0\WebJobs.Extension.File.deps.json
+D:\Venkatesh\ServerlessArchitecture\ASPNETCoreFunction2.0\AzureFunction20\HttpFunction\WebJobs.Extension.File\bin\Debug\netstandard2.0\WebJobs.Extension.File.dll
+D:\Venkatesh\ServerlessArchitecture\ASPNETCoreFunction2.0\AzureFunction20\HttpFunction\WebJobs.Extension.File\bin\Debug\netstandard2.0\WebJobs.Extension.File.pdb
+D:\Venkatesh\ServerlessArchitecture\ASPNETCoreFunction2.0\AzureFunction20\HttpFunction\WebJobs.Extension.File\obj\Debug\netstandard2.0\WebJobs.Extension.File.csprojAssemblyReference.cache
+D:\Venkatesh\ServerlessArchitecture\ASPNETCoreFunction2.0\AzureFunction20\HttpFunction\WebJobs.Extension.File\obj\Debug\netstandard2.0\WebJobs.Extension.File.csproj.CoreCompileInputs.cache
+D:\Venkatesh\ServerlessArchitecture\ASPNETCoreFunction2.0\AzureFunction20\HttpFunction\WebJobs.Extension.File\obj\Debug\netstandard2.0\WebJobs.Extension.File.AssemblyInfoInputs.cache
+D:\Venkatesh\ServerlessArchitecture\ASPNETCoreFunction2.0\AzureFunction20\HttpFunction\WebJobs.Extension.File\obj\Debug\netstandard2.0\WebJobs.Extension.File.AssemblyInfo.cs
+D:\Venkatesh\ServerlessArchitecture\ASPNETCoreFunction2.0\AzureFunction20\HttpFunction\WebJobs.Extension.File\obj\Debug\netstandard2.0\WebJobs.Extension.File.dll
+D:\Venkatesh\ServerlessArchitecture\ASPNETCoreFunction2.0\AzureFunction20\HttpFunction\WebJobs.Extension.File\obj\Debug\netstandard2.0\WebJobs.Extension.File.pdb
