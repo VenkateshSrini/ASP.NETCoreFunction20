@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Docker", "..\Docker\Docker.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueueFunction", "QueueFunction\QueueFunction.csproj", "{4DD343B4-C9EC-4AB8-AA68-E685972F9FD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebJobs.Extension.File", "WebJobs.Extension.File\WebJobs.Extension.File.csproj", "{EBA87FC8-2C23-40C1-8162-C62B4EE329C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebJobs.Extension.File", "WebJobs.Extension.File\WebJobs.Extension.File.csproj", "{EBA87FC8-2C23-40C1-8162-C62B4EE329C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
