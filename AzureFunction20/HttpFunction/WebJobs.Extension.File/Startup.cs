@@ -13,7 +13,7 @@ namespace WebJobs.Extension.File
         public void Configure(IWebJobsBuilder builder)
         {
             
-            builder.AddExtension<FileAccessExtension>();
+            builder.AddExtension<FileAccessExtension>();            
         }
     }
 }
