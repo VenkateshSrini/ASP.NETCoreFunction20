@@ -31,6 +31,7 @@ namespace DurableFunctionPoC
         {
             var name = activityContext.GetInput<string>();
             log.LogInformation($"Saying hello to {name}.");
+            
             return $"Hello {name}!";
         }
 
