@@ -18,11 +18,13 @@ namespace DurableFunctionPoC.Model
     }
     public class Leave
     {
-        public int EmployeeID { get; }
-        public string EmployeeName { get; }
-        public LeaveType Type { get; }
+        public int EmployeeID { get; set; }
+        public string EmployeeName { get; set; }
+        public LeaveType Type { get; set; }
         public LeaveStatus LeaveStatus { get; set; }
         public string Reason { get; set; }
+        public string WorkflowId { get; set; }
+        public Leave() { }
         public Leave(int id, string name, LeaveType leaveType, string reason)
         {
             EmployeeID = id;

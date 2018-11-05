@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using DurableFunctionPoC.Repository;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
+using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace DurableFunctionPoC
 {
@@ -29,6 +31,7 @@ namespace DurableFunctionPoC
         [FunctionName("OrchestrationFunction_Hello")]
         public static string SayHello([ActivityTrigger] DurableActivityContext activityContext, ILogger log)
         {
+            
             var name = activityContext.GetInput<string>();
             log.LogInformation($"Saying hello to {name}.");
             
@@ -38,7 +41,7 @@ namespace DurableFunctionPoC
         [FunctionName("OrchestrationFunction_HttpStart")]
         public static async Task<HttpResponseMessage> HttpStart(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")]HttpRequestMessage req,
-            [OrchestrationClient]DurableOrchestrationClient starter,
+            [OrchestrationClient]DurableOrchestrationClient starter,[Inject]ILeaveRepository respository,
             ILogger log)
         {
             // Function input comes from the request content.
