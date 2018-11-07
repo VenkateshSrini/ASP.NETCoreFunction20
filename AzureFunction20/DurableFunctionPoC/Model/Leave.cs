@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace DurableFunctionPoC.Model
 {
     public enum LeaveStatus
@@ -18,6 +19,7 @@ namespace DurableFunctionPoC.Model
     }
     public class Leave
     {
+        public Guid LeaveID { get; set; }
         public int EmployeeID { get; set; }
         public string EmployeeName { get; set; }
         public LeaveType Type { get; set; }
@@ -32,6 +34,7 @@ namespace DurableFunctionPoC.Model
             Type = leaveType;
             Reason = reason;
             LeaveStatus = LeaveStatus.Applied;
+            LeaveID = Guid.NewGuid();
         }
     }
 }
