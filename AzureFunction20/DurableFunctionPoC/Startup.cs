@@ -7,12 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
+using DurableFunctionPoC;
 
-[assembly: WebJobsStartup(typeof(DurableFunctionPoC.Startup))]
+[assembly: WebJobsStartup(typeof(Startup))]
 namespace DurableFunctionPoC
 {
     public class Startup : IWebJobsStartup
     {
+        public Startup() => BuildConfiguration();
         private IConfiguration Configuration;
         private void BuildConfiguration()
         {

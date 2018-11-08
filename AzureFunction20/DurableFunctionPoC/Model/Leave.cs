@@ -26,7 +26,9 @@ namespace DurableFunctionPoC.Model
         public LeaveStatus LeaveStatus { get; set; }
         public string Reason { get; set; }
         public string WorkflowId { get; set; }
-        public Leave() { }
+        public Leave() {
+            LeaveID = Guid.NewGuid();
+        }
         public Leave(int id, string name, LeaveType leaveType, string reason)
         {
             EmployeeID = id;
