@@ -31,8 +31,8 @@ namespace DurableFunctionPoC.Repository
             command.Parameters.AddWithValue("@leaveid", leave.LeaveID);
             command.Parameters.AddWithValue("@empployeeid", leave.EmployeeID);
             command.Parameters.AddWithValue("@employeename", leave.EmployeeName);
-            command.Parameters.AddWithValue("@type", leave.Type);
-            command.Parameters.AddWithValue("@status", leave.LeaveStatus);
+            command.Parameters.AddWithValue("@type", (int)leave.Type);
+            command.Parameters.AddWithValue("@status", (int)leave.LeaveStatus);
             command.Parameters.AddWithValue("@reason", leave.Reason);
             command.Parameters.AddWithValue("@wfid", leave.WorkflowId);
             try
@@ -119,8 +119,8 @@ namespace DurableFunctionPoC.Repository
             var connection = createNewConnection();
             var command = connection.CreateCommand();
             command.CommandText = @"UPDATE public.leavetbl SET type=@type, status=@status, reason=@reason WHERE leaveid=@leaveid;";
-            command.Parameters.AddWithValue("@type", leave.Type);
-            command.Parameters.AddWithValue("@status", leave.LeaveStatus);
+            command.Parameters.AddWithValue("@type", (int)leave.Type);
+            command.Parameters.AddWithValue("@status", (int)leave.LeaveStatus);
             command.Parameters.AddWithValue("@reason", leave.Reason);
             command.Parameters.AddWithValue("@empployeeid", leave.EmployeeID);
             try

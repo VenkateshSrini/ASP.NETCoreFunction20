@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using DurableFunctionPoC.Model;
 using DurableFunctionPoC.Repository;
@@ -20,51 +21,68 @@ namespace DurableFunctionPoC
     public static class OrchestrationFunction
     {
         [FunctionName("OrchestrationFunction")]
-        public static async Task<List<string>> RunOrchestrator(
-            [OrchestrationTrigger] DurableOrchestrationContext context)
+        public static async Task<string> RunOrchestrator(
+            [OrchestrationTrigger] DurableOrchestrationContext context,  [Inject]ILeaveRepository respository, ILogger log)
         {
-            
-            var outputs = new List<string>();
+            Leave leave = context.GetInput<Leave>();
+            await context.CallActivityAsync<string>("ApproveLeave", leave);
+            using (var cts = new CancellationTokenSource())
+            {
+                var timeOut = context.CurrentUtcDateTime.AddMinutes(5);
+                var timeOutTask = context.CreateTimer(timeOut, cts.Token);
+                var approvalTask = context.WaitForExternalEvent<string>("ApproveLeave");
+                Task result = Task.WhenAny(approvalTask, timeOutTask);
+                if(result == approvalTask)
+                {
+                    cts.Cancel();
+                    return approvalTask.Result;
+                }
+                else
+                {
+                    leave.LeaveStatus = LeaveStatus.Approved;
+                    var updateResult = await respository.UpdateLeave(leave, log);
+                    return "Approved";
+                }
+            }
 
-            // Replace "hello" with the name of your Durable Activity Function.
-            outputs.Add(await context.CallActivityAsync<string>("OrchestrationFunction_Hello", "Tokyo"));
-            outputs.Add(await context.CallActivityAsync<string>("OrchestrationFunction_Hello", "Seattle"));
-            outputs.Add(await context.CallActivityAsync<string>("OrchestrationFunction_Hello", "London"));
 
-            // returns ["Hello Tokyo!", "Hello Seattle!", "Hello London!"]
-            return outputs;
+
         }
 
-        [FunctionName("OrchestrationFunction_Hello")]
-        public static string SayHello([ActivityTrigger] DurableActivityContext activityContext, ILogger log)
+        [FunctionName("ApproveLeave")]
+        public static string ApproveLeave([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")]HttpRequestMessage req,
+            [OrchestrationClient] DurableOrchestrationClient orchestrationClient, [Inject]ILeaveRepository respository,
+            ILogger log)
         {
             
-            var name = activityContext.GetInput<string>();
-            log.LogInformation($"Saying hello to {name}.");
+            //var name = orchestrationClient.Get
+            //log.LogInformation($"Saying hello to {name}.");
             
-            return $"Hello {name}!";
+            return $"Hello !";
         }
 
-        [FunctionName("OrchestrationFunction_HttpStart")]
-        public static async Task<HttpResponseMessage> HttpStart(
+        [FunctionName("ApplyLeave")]
+        public static async Task<HttpResponseMessage> ApplyLeave_StartWF(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")]HttpRequestMessage req,
             [OrchestrationClient]DurableOrchestrationClient starter,[Inject]ILeaveRepository respository,
             ILogger log)
         {
             // Function input comes from the request content.
-            string instanceId = await starter.StartNewAsync("OrchestrationFunction", null);
+            
             var leavereq = await req.Content.ReadAsAsync<Leave>();
-            leavereq.WorkflowId = instanceId;
+            //leavereq.WorkflowId = instanceId;
             leavereq.LeaveID = Guid.NewGuid();
             var result = await respository.AddLeave(leavereq, log);
             if (result != -1)
             {
+                string instanceId = await starter.StartNewAsync("OrchestrationFunction", leavereq);
+                leavereq.WorkflowId = instanceId;
                 log.LogInformation($"Started orchestration with ID = '{instanceId}'.");
                 return starter.CreateCheckStatusResponse(req, instanceId);
             }
             else
             {
-                await starter.TerminateAsync(instanceId, "Unable to add Leave to DB");
+                //await starter.TerminateAsync(instanceId, "Unable to add Leave to DB");
                 return new HttpResponseMessage
                 {
                     StatusCode = System.Net.HttpStatusCode.BadRequest,
