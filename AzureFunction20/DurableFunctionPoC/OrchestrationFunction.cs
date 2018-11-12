@@ -25,12 +25,15 @@ namespace DurableFunctionPoC
             [OrchestrationTrigger] DurableOrchestrationContext context,  [Inject]ILeaveRepository respository, ILogger log)
         {
             Leave leave = context.GetInput<Leave>();
+            //updating workflowid
+            var res = await respository.UpdateLeave(leave, log);
             await context.CallActivityAsync<string>("ApproveLeave", leave);
+            
             using (var cts = new CancellationTokenSource())
             {
                 var timeOut = context.CurrentUtcDateTime.AddMinutes(5);
                 var timeOutTask = context.CreateTimer(timeOut, cts.Token);
-                var approvalTask = context.WaitForExternalEvent<string>("ApproveLeave");
+                var approvalTask = context.WaitForExternalEvent<string>("ApproveLeaveEvent");
                 Task result = Task.WhenAny(approvalTask, timeOutTask);
                 if(result == approvalTask)
                 {
@@ -50,15 +53,28 @@ namespace DurableFunctionPoC
         }
 
         [FunctionName("ApproveLeave")]
-        public static string ApproveLeave([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")]HttpRequestMessage req,
+        public static async Task<string> ApproveLeave([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")]HttpRequestMessage req,
+            Leave wfParamLeaveObj,
             [OrchestrationClient] DurableOrchestrationClient orchestrationClient, [Inject]ILeaveRepository respository,
             ILogger log)
         {
-            
+            string status = default(string);
+            var leavereq = await req.Content.ReadAsAsync<Leave>();
+            wfParamLeaveObj.LeaveStatus = LeaveStatus.Approved;
+
+            //var pendingLeave = await respository.GetLeave(leavereq.EmployeeID, leavereq.LeaveID.ToString(),log);
+            //pendingLeave.LeaveStatus = LeaveStatus.Approved;
+            if (await respository.UpdateLeave(wfParamLeaveObj, log))
+            {
+                status = "Approved";
+            }
+            else
+                status = "Rejected";
+
             //var name = orchestrationClient.Get
             //log.LogInformation($"Saying hello to {name}.");
-            
-            return $"Hello !";
+            await orchestrationClient.RaiseEventAsync(wfParamLeaveObj.WorkflowId, "ApproveLeaveEvent", status);
+            return status;
         }
 
         [FunctionName("ApplyLeave")]
@@ -75,8 +91,9 @@ namespace DurableFunctionPoC
             var result = await respository.AddLeave(leavereq, log);
             if (result != -1)
             {
-                string instanceId = await starter.StartNewAsync("OrchestrationFunction", leavereq);
                 leavereq.WorkflowId = instanceId;
+                string instanceId = await starter.StartNewAsync("OrchestrationFunction", leavereq);
+                
                 log.LogInformation($"Started orchestration with ID = '{instanceId}'.");
                 return starter.CreateCheckStatusResponse(req, instanceId);
             }

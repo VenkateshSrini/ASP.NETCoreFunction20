@@ -9,7 +9,7 @@ namespace DurableFunctionPoC.Repository
 {
     public interface ILeaveRepository
     {
-        Task<Leave> GetLeave(int EmployeeId, string OrchestrationId, ILogger log);
+        Task<Leave> GetLeave(int EmployeeId, string LeaveId, ILogger log);
         Task<int> AddLeave(Leave leave, ILogger log);
         Task<bool> UpdateLeave(Leave leave, ILogger log);
         Task<bool> DeleteLeave(int employeeID, ILogger log);

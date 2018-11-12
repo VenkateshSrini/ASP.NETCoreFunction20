@@ -76,15 +76,15 @@ namespace DurableFunctionPoC.Repository
             }
         }
 
-        public async Task<Leave> GetLeave(int EmployeeId, string OrchestrationId, ILogger log)
+        public async Task<Leave> GetLeave(int EmployeeId, string LeaveId, ILogger log)
         {
             log.LogInformation("DB Select started");
             var connection = createNewConnection();
             var command = connection.CreateCommand();
             command.CommandText = @"SELECT leaveid, empployeeid, employeename, type, status, reason, wfid
-  FROM public.leavetbl WHERE empployeeid=@empployeeid AND wfid=@wfid;";
+  FROM public.leavetbl WHERE empployeeid=@empployeeid AND leaveid=@leaveid;";
             command.Parameters.AddWithValue("@empployeeid", EmployeeId);
-            command.Parameters.AddWithValue("@wfid", OrchestrationId);
+            command.Parameters.AddWithValue("@leaveid", LeaveId);
             try
             {
                 await connection.OpenAsync();
@@ -118,11 +118,12 @@ namespace DurableFunctionPoC.Repository
             log.LogInformation("DB Update started");
             var connection = createNewConnection();
             var command = connection.CreateCommand();
-            command.CommandText = @"UPDATE public.leavetbl SET type=@type, status=@status, reason=@reason WHERE leaveid=@leaveid;";
+            command.CommandText = @"UPDATE public.leavetbl SET type=@type, status=@status, reason=@reason, wfid = @wfid  WHERE leaveid=@leaveid;";
             command.Parameters.AddWithValue("@type", (int)leave.Type);
             command.Parameters.AddWithValue("@status", (int)leave.LeaveStatus);
             command.Parameters.AddWithValue("@reason", leave.Reason);
-            command.Parameters.AddWithValue("@empployeeid", leave.EmployeeID);
+            command.Parameters.AddWithValue("@wfid", leave.WorkflowId);
+            command.Parameters.AddWithValue("@leaveid", leave.LeaveID.ToString());
             try
             {
                 await connection.OpenAsync();
