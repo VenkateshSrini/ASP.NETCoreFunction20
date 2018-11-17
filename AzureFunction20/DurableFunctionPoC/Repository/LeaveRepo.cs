@@ -92,7 +92,7 @@ namespace DurableFunctionPoC.Repository
                 if (reader.HasRows && reader.Read() )
                 {
                     Leave leave = new Leave();
-                    leave.LeaveID = reader.GetGuid(0);
+                    leave.LeaveID = Guid.Parse(reader.GetString(0));
                     leave.EmployeeID = reader.GetInt32(1);
                     leave.EmployeeName = reader.GetString(2);
                     leave.Type = (LeaveType) Enum.ToObject(typeof(LeaveType),reader.GetInt32(3)) ;
