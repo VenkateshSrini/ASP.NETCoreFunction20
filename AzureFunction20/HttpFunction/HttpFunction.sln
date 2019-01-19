@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebJobs.Extension.File", "W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DurableFunctionPoC", "..\DurableFunctionPoC\DurableFunctionPoC.csproj", "{79874ADA-9C82-4C5A-AA8A-1866C35305C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DurableFunctionOOB", "..\DurableFunctionOOB\DurableFunctionOOB.csproj", "{C7ED86B6-D75F-4CB7-A017-87B557659A0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DurableFunctionOOB", "..\DurableFunctionOOB\DurableFunctionOOB.csproj", "{C7ED86B6-D75F-4CB7-A017-87B557659A0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingFunction", "LoggingFunction\LoggingFunction.csproj", "{543BF7FF-4E45-4F43-B76F-65D3578B6AF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{C7ED86B6-D75F-4CB7-A017-87B557659A0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7ED86B6-D75F-4CB7-A017-87B557659A0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7ED86B6-D75F-4CB7-A017-87B557659A0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{543BF7FF-4E45-4F43-B76F-65D3578B6AF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{543BF7FF-4E45-4F43-B76F-65D3578B6AF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{543BF7FF-4E45-4F43-B76F-65D3578B6AF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{543BF7FF-4E45-4F43-B76F-65D3578B6AF9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
